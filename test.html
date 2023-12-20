@@ -26,18 +26,26 @@
   <br>
   <br>
 
-
-  <!-- Need to alin=gn this in one single line and uniformity in the margins :: Entry boxes and Comparison texts -->      
+  <p><div><h2>Enter Preference Factor:</h2></div></p>
+  Taste <input type="text" id="tasteRoast" style="border: 2px solid #000; width: 75px;" >     Roast
         <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Cost      <input type="text" id="test-input-1" style="border: 2px solid #000; width: 75px;" >     Lead Time
+  Taste <input type="text" id="tasteDT" style="border: 2px solid #000; width: 75px;" >     Delivery Time
   <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Roast      <input type="text" id="test-input-2" style="border: 2px solid #000; width: 75px;" >      Origin Country
+  Taste <input type="text" id="tasteRep" style="border: 2px solid #000; width: 75px;" >      Reputation
   <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Aftertaste      <input type="text" id="test-input-3" style="border: 2px solid #000; width: 75px;" >     Cost 
+  Taste <input type="text" id="tasteOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
   <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Cost      <input type="text" id="test-input-4" style="border: 2px solid #000; width: 75px;" >      Origin Country 
+  Roast <input type="text" id="roastDT" style="border: 2px solid #000; width: 75px;" >      Delivery Time
   <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Cost      <input type="text" id="test-input-5" style="border: 2px solid #000; width: 75px;" >     Roast
+  Roast <input type="text" id="roastRep" style="border: 2px solid #000; width: 75px;" >     Reputation
+  <p><div><h2>Enter Preference Factor:</h2></div></p>
+  Roast <input type="text" id="roastOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
+  <p><div><h2>Enter Preference Factor:</h2></div></p>
+  Delivery Time <input type="text" id="dtRep" style="border: 2px solid #000; width: 75px;" >     Reputation
+  <p><div><h2>Enter Preference Factor:</h2></div></p>
+  Delivery Time <input type="text" id="dtOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
+  <p><div><h2>Enter Preference Factor:</h2></div></p>
+  Reputation <input type="text" id="repOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
 
   <br>
   <br>
@@ -53,7 +61,7 @@
         <py-env>
             - pandas
             - paths:
-                - ./username.csv
+                - ./tempSheet.csv
         </py-env>
     </center>
 
@@ -69,26 +77,113 @@ import csv
 def my_function(*args, **kwargs):
 
     <!--read a csv file and convert it to a dictionary-->
-    DList=[*csv.DictReader(open("./coffeeData.csv"))]
+    vendorMetrics=[*csv.DictReader(open("./tempSheet.csv"))]
+    numberOfMetrics=5
     
     print("here")
-    print(DList)
     
-    <!--take the value from the input field and save into the variable text-->
-    text = Element('test-input-1').element.value
-    text = Element('test-input-2').element.value
-    text = Element('test-input-3').element.value
-    text = Element('test-input-4').element.value
-    text = Element('test-input-5').element.value
-
-    <!--traverse the list and find the requested the data-->
-    for row in lst:
-            if row['Username']==text:
-                text="for user= "+text+" = "+str(row)
+    <!--take the value from the input field and save into the variable-->
+    tasteroast = int(Element('tasteRoast').element.value)
+    tastedt = int(Element('tasteDT').element.value)
+    tasterep = int(Element('tasteRep').element.value)
+    tasteop = int(Element('tasteOP').element.value)
+    roastdt = int(Element('roastDT').element.value)
+    roastrep = int(Element('roastRep').element.value)
+    roastop = int(Element('roastOP').element.value)
+    dtrep = int(Element('dtRep').element.value)
+    dtop = int(Element('dtOP').element.value)
+    repop = int(Element('repOP').element.value)
 
     <!--return the output to the screen in the test-ouput division-->
-    Element('test-output-AHP').element.innerText = text
-    Element('test-output-Clust').element.innerText = text
+    Element('test-output-AHP').element.innerText = tasteop
+    Element('test-output-Clust').element.innerText = repop
+
+    <!-- building the performance on criteria table for user input -->
+
+    perfTable = [[0]*numberOfMetrics for i in range(numberOfMetrics)]
+
+    perfTable[0][1]= tasteroast
+    perfTable[0][2]= tastedt
+    perfTable[0][3]= tasterep
+    perfTable[0][4]= tasteop
+    perfTable[1][2]= roastdt
+    perfTable[1][3]= roastrep
+    perfTable[1][4]= roastop
+    perfTable[2][3]= dtrep
+    perfTable[2][4]= dtop
+    perfTable[3][4]= repop
+
+    for i in range(numberOfMetrics):
+        for j in range(numberOfMetrics):
+            if i==j:
+                perfTable[i][j]=1
+                continue
+            if perfTable[i][j]!=0:
+                continue
+            perfTable[i][j]=1/perfTable[j][i]
+        
+    <!-- creating the weight on objectives table -->
+    
+    weightedUserKPI = [[0]* numberOfMetrics for i in range(numberOfMetrics)]
+
+    for i in range(numberOfMetrics):
+        for j in range(numberOfMetrics):
+            sum = 0
+            for row in range(numberOfMetrics):
+                sum += perfTable[i][row]
+            weightedUserKPI[i][j]=perfTable[i][j]/sum
+
+    <!-- Below commented code is for the relative matrix of vendors -->
+
+    <!-- relativeMatrixTaste = [[0]* len(vendorMetrics) for i in range(len(vendorMetrics))]
+
+    for vendor1 in range(len(vendorMetrics)):
+        vendor1Val = int(vendorMetrics[vendor1]['Taste'])
+
+        for vendor2 in range(len(vendorMetrics)):
+            relativeMatrixTaste[vendor1][vendor2]= vendor1Val / int(vendorMetrics[vendor2]['Taste'])
+
+    print(relativeMatrixTaste)
+    
+    weightedOnTaste = [[0]* len(vendorMetrics) for i in range(len(vendorMetrics))]
+
+    for i in range(len(relativeMatrixTaste)):
+        for j in range(len(relativeMatrixTaste)):
+            print("for index " +str(i)+" "+str(j))
+            relativeVendorVal = relativeMatrixTaste[i][j]
+
+            sum=0
+
+            for k in range(len(relativeMatrixTaste)):
+                sum += relativeMatrixTaste[k][j]
+            
+            print(sum)
+
+            temp = relativeVendorVal/sum
+            weightedOnTaste[i][j]=temp
+    -->
+
+    <!-- creating the weight matrix of vendors -->
+
+    weightedMatrixOfVendors={}
+
+    metricsList=list(vendorMetrics[0].keys())[1:]
+
+    for metric in metricsList :
+        print(metric)
+        tempDict={}
+        for vendor1 in range(len(vendorMetrics)):
+            vendor1Val = int(vendorMetrics[vendor1][metric])
+            sum = 0
+            
+            for vendor2 in range(len(vendorMetrics)):
+                sum += int(vendorMetrics[vendor2][metric])
+
+            tempDict['V'+str(vendor1)]=vendor1Val/sum
+
+        weightedMatrixOfVendors[metric] = tempDict
+
+    print(weightedMatrixOfVendors)
    
    <!-- AHP Code # Create a function to input pairwise comparisons using a Tkinter dialog -  Complete Revamp TO REMOVE FORM CODE NOT REQUIRED FOR PROJECT 
     def input_comparison(i, j):
