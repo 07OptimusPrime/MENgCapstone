@@ -11,42 +11,48 @@
 
 <!--HTML TEXT: -->
 
-    <center>
         <style>
             h1{font-size: 25px;}
             h2{font-size: 20px;}
             h3{font-size: 15px;}
             h4{font-size: 10px;}
+            .clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
         </style>
         
         <br>
         <br>
-  <h1>BLACK BRICK</h1>
-  <h3> Vendor Selection at One Click!</h3>
+  <div class="clearfix" style="text-align: center;"><h1>BLACK BRICK</h1></div>
+  <div class="clearfix" style="text-align: center;"><h3> Vendor Selection at One Click!</h3></div>
   <br>
   <br>
 
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Taste <input type="text" id="tasteRoast" style="border: 2px solid #000; width: 75px;" >     Roast
-        <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Taste <input type="text" id="tasteDT" style="border: 2px solid #000; width: 75px;" >     Delivery Time
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Taste <input type="text" id="tasteRep" style="border: 2px solid #000; width: 75px;" >      Reputation
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Taste <input type="text" id="tasteOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Roast <input type="text" id="roastDT" style="border: 2px solid #000; width: 75px;" >      Delivery Time
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Roast <input type="text" id="roastRep" style="border: 2px solid #000; width: 75px;" >     Reputation
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Roast <input type="text" id="roastOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Delivery Time <input type="text" id="dtRep" style="border: 2px solid #000; width: 75px;" >     Reputation
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Delivery Time <input type="text" id="dtOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
-  <p><div><h2>Enter Preference Factor:</h2></div></p>
-  Reputation <input type="text" id="repOP" style="border: 2px solid #000; width: 75px;" >     Origin Popularity
+  <p><div style="text-align: center;"><h2>Enter Preference Factor:</h2></div></p>
+  <div style="text-align: center;">
 
+  <div style="text-align: center;">Taste/Roast <input type="text" id="tasteRoast" style="border: 2px solid #000; width: 75px;" >     </div>
+        
+<div style="text-align: center;"> Taste/Delivery Time<input type="text" id="tasteDT" style="border: 2px solid #000; width: 75px;" ></div>     
+  
+<div style="text-align: center;">  Taste/Reputation <input type="text" id="tasteRep" style="border: 2px solid #000; width: 75px;" ></div>      
+  
+  <div style="text-align: center;">Taste/Origin Popularity<input type="text" id="tasteOP" style="border: 2px solid #000; width: 75px;" ></div>
+  
+ <div style="text-align: center;"> Roast/Delivery Time<input type="text" id="roastDT" style="border: 2px solid #000; width: 75px;" ></div>      
+  
+  <div style="text-align: center;">Roast/Reputation<input type="text" id="roastRep" style="border: 2px solid #000; width: 75px;" ></div>     
+  
+ <div style="text-align: center;"> Roast/Origin Popularity<input type="text" id="roastOP" style="border: 2px solid #000; width: 75px;" ></div>     
+  
+  <div style="text-align: center;">Delivery Time/Reputation<input type="text" id="dtRep" style="border: 2px solid #000; width: 75px;" ></div>     
+  
+  <div class="clearfix" style="text-align: center;">Delivery Time/Origin Popularity <input type="text" id="dtOP" style="border: 2px solid #000; width: 75px;" >   </div>
+  
+  <div style="text-align: center;">Reputation/Origin Popularity<input type="text" id="repOP" style="border: 2px solid #000; width: 75px;" ></div>     
+  </div>
   <br>
   <br>
 
@@ -80,8 +86,6 @@ def my_function(*args, **kwargs):
     vendorMetrics=[*csv.DictReader(open("./tempSheet.csv"))]
     numberOfMetrics=5
     
-    print("here")
-    
     <!--take the value from the input field and save into the variable-->
     tasteroast = int(Element('tasteRoast').element.value)
     tastedt = int(Element('tasteDT').element.value)
@@ -95,8 +99,8 @@ def my_function(*args, **kwargs):
     repop = int(Element('repOP').element.value)
 
     <!--return the output to the screen in the test-ouput division-->
-    Element('test-output-AHP').element.innerText = tasteop
-    Element('test-output-Clust').element.innerText = repop
+    <!-- Element('test-output-AHP').element.innerText = tasteop
+    Element('test-output-Clust').element.innerText = repop -->
 
     <!-- building the performance on criteria table for user input -->
 
