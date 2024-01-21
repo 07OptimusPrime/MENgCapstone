@@ -11,17 +11,30 @@
 
 <!--HTML TEXT: -->
 
-        <style>
-            h1{font-size: 25px;}
-            h2{font-size: 20px;}
-            h3{font-size: 15px;}
-            h4{font-size: 10px;}
-            .clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
+<style>
+    h1{font-size: 25px;}
+    h2{font-size: 20px;}
+    h3{font-size: 15px;}
+    h4{font-size: 10px;}
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    
+    .flex-container {
+    display: flex;
 }
-        </style>
+
+.flex-child {
+    flex: 1;
+    
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+</style>
         
         <br>
         <br>
@@ -30,42 +43,98 @@
   <br>
   <br>
 
-  <p><div style="text-align: center;"><h2>Enter Preference Factor:</h2></div></p>
-  <div style="text-align: center;">
+  <p><div style="text-align: center;"><h2>Enter Preference Rank:</h2></div></p>
+  <div class="flex-container" style="text-align: center;">
+    <div class="flex-child" style="text-align: right;">
+    <br>
+    <div style="margin-bottom: 2px; margin-top: 2px;">Taste</div>
+    <br>
+    <div style="margin-bottom: 2px; margin-top: 2px;">Roast</div>
+    <br>
+    <div style="margin-bottom: 2px; ">Delivery Time</div>
+    <br>
+    <div style="margin-bottom: 2px;">Reputation</div>
+    <br>
+    <div style="margin-bottom: 2px;">Origin Popularity</div>
+    </div>
+    <div class="flex-child">
+        <br>
+    <div style="text-align: left;"><input type="text" id="taste" style="border: 2px solid #000; width: 75px;" ></div>      
+    <br>
+    <div style="text-align: left;"> <input type="text" id="roast" style="border: 2px solid #000; width: 75px;" >     </div>
+    <br>
+    <div style="text-align: left;"><input type="text" id="dt" style="border: 2px solid #000; width: 75px;" ></div>     
+    <br>
+    <div style="text-align: left;"> <input type="text" id="rep" style="border: 2px solid #000; width: 75px;" ></div>      
+    <br>
+    <div style="text-align: left;"><input type="text" id="op" style="border: 2px solid #000; width: 75px;" ></div>
+    </div>
+</div>
+<br>
+<br>
 
-  <div style="text-align: center;">Taste/Roast <input type="text" id="tasteRoast" style="border: 2px solid #000; width: 75px;" >     </div>
-        
-<div style="text-align: center;"> Taste/Delivery Time<input type="text" id="tasteDT" style="border: 2px solid #000; width: 75px;" ></div>     
-  
-<div style="text-align: center;">  Taste/Reputation <input type="text" id="tasteRep" style="border: 2px solid #000; width: 75px;" ></div>      
-  
-  <div style="text-align: center;">Taste/Origin Popularity<input type="text" id="tasteOP" style="border: 2px solid #000; width: 75px;" ></div>
-  
- <div style="text-align: center;"> Roast/Delivery Time<input type="text" id="roastDT" style="border: 2px solid #000; width: 75px;" ></div>      
-  
-  <div style="text-align: center;">Roast/Reputation<input type="text" id="roastRep" style="border: 2px solid #000; width: 75px;" ></div>     
-  
- <div style="text-align: center;"> Roast/Origin Popularity<input type="text" id="roastOP" style="border: 2px solid #000; width: 75px;" ></div>     
-  
-  <div style="text-align: center;">Delivery Time/Reputation<input type="text" id="dtRep" style="border: 2px solid #000; width: 75px;" ></div>     
-  
-  <div class="clearfix" style="text-align: center;">Delivery Time/Origin Popularity <input type="text" id="dtOP" style="border: 2px solid #000; width: 75px;" >   </div>
-  
-  <div style="text-align: center;">Reputation/Origin Popularity<input type="text" id="repOP" style="border: 2px solid #000; width: 75px;" ></div>     
-  </div>
-  <br>
-  <br>
-
-  <button id="submit-button" type="submit" pys-onClick="my_function">OK</button>
+  <div style="text-align: center;"><button id="submit-button" style="border: 2px solid #000;" type="submit" onclick="helper()" pys-onClick="my_function">OK</button></div>
   
   <!-- Space creation for AHP output-->
   <div id="test-output-AHP"></div>
-
+  <br>
+  
+    <div style="text-align: center;">
+        <div style="text-align: center;"><input type="text" id="AHPSoln" style="border: 2px solid #000; width: 150px;" ></div>
+        <br>
+        <div style="text-align: center;"><button type="button" style="border: 2px solid #000;" onclick="ClearFields()">Clear</button></div>  
+    </div>
    <!-- Space creation for Clusttering output-->
    <div id="test-output-Clust"></div>
 
+   <script>
+
+    function helper(){
+    
+        console.log(document.getElementById("taste").value)
+        
+        let taste = isNaN(parseInt(document.getElementById("taste").value, 10)) ? 0 : parseInt(document.getElementById("taste").value, 10);
+        let roast = isNaN(parseInt(document.getElementById("roast").value, 10)) ? 0 : parseInt(document.getElementById("roast").value, 10);
+        let dt = isNaN(parseInt(document.getElementById("dt").value, 10)) ? 0 : parseInt(document.getElementById("dt").value, 10);
+        let rep = isNaN(parseInt(document.getElementById("rep").value, 10)) ? 0 : parseInt(document.getElementById("rep").value, 10);
+        let op = isNaN(parseInt(document.getElementById("op").value, 10)) ? 0 : parseInt(document.getElementById("op").value, 10);
+        
+        let missingVal = 15 - (taste+roast+dt+rep+op);
+        
+        if(missingVal!=0){
+
+            if(taste==0){
+                document.getElementById("taste").value = missingVal;
+            }
+            else if(roast==0){
+                document.getElementById("roast").value = missingVal;
+            }
+            else if(dt==0){
+                document.getElementById("dt").value = missingVal;
+            }
+            else if(rep==0){
+                document.getElementById("rep").value = missingVal;
+            }
+            else if(op==0){
+                document.getElementById("op").value = missingVal;
+            }
+        }
+    }
+
+    function ClearFields() {
+
+    document.getElementById("AHPSoln").value = "";
+    document.getElementById("taste").value = "";
+    document.getElementById("roast").value = "";
+    document.getElementById("dt").value = "";
+    document.getElementById("rep").value = "";
+    document.getElementById("op").value = "";
+    }
+   </script>
+
         <py-env>
             - pandas
+            - numpy
             - paths:
                 - ./tempSheet.csv
         </py-env>
@@ -78,103 +147,57 @@
 
 import pandas as pd
 import csv
+import numpy as np
 
 
 def my_function(*args, **kwargs):
 
-    <!--read a csv file and convert it to a dictionary-->
     vendorMetrics=[*csv.DictReader(open("./tempSheet.csv"))]
     numberOfMetrics=5
     
-    <!--take the value from the input field and save into the variable-->
-    tasteroast = int(Element('tasteRoast').element.value)
-    tastedt = int(Element('tasteDT').element.value)
-    tasterep = int(Element('tasteRep').element.value)
-    tasteop = int(Element('tasteOP').element.value)
-    roastdt = int(Element('roastDT').element.value)
-    roastrep = int(Element('roastRep').element.value)
-    roastop = int(Element('roastOP').element.value)
-    dtrep = int(Element('dtRep').element.value)
-    dtop = int(Element('dtOP').element.value)
-    repop = int(Element('repOP').element.value)
+    taste = (Element('taste').element.value)
+    roast = (Element('roast').element.value)
+    dt = (Element('dt').element.value)
+    rep = (Element('rep').element.value)
+    op = (Element('op').element.value)
 
-    <!--return the output to the screen in the test-ouput division-->
-    <!-- Element('test-output-AHP').element.innerText = tasteop
-    Element('test-output-Clust').element.innerText = repop -->
+    mat = [None]*5
 
-    <!-- building the performance on criteria table for user input -->
+    mat[0] = int(taste)
+    mat[1] = int(roast)
+    mat[2] = int(dt)
+    mat[3] = int(rep)
+    mat[4] = int(op)
 
-    perfTable = [[0]*numberOfMetrics for i in range(numberOfMetrics)]
+    print(mat)
 
-    perfTable[0][1]= tasteroast
-    perfTable[0][2]= tastedt
-    perfTable[0][3]= tasterep
-    perfTable[0][4]= tasteop
-    perfTable[1][2]= roastdt
-    perfTable[1][3]= roastrep
-    perfTable[1][4]= roastop
-    perfTable[2][3]= dtrep
-    perfTable[2][4]= dtop
-    perfTable[3][4]= repop
+    industryMultiplier = [3.508, 3.417, 2.998, 2.758, 2.849]
 
-    for i in range(numberOfMetrics):
-        for j in range(numberOfMetrics):
-            if i==j:
-                perfTable[i][j]=1
-                continue
-            if perfTable[i][j]!=0:
-                continue
-            perfTable[i][j]=1/perfTable[j][i]
-        
-    <!-- creating the weight on objectives table -->
+    tempUnifiedCriterion = [industryMultiplier[0]*mat[0], industryMultiplier[1]*mat[1], industryMultiplier[2]*mat[2], industryMultiplier[3]*mat[3], industryMultiplier[4]*mat[4]]
+
+    sum = tempUnifiedCriterion[0]+tempUnifiedCriterion[1]+tempUnifiedCriterion[2]+tempUnifiedCriterion[3]+tempUnifiedCriterion[4];
+
+    unifiedCriterion={}
     
-    weightedUserKPI = [[0]* numberOfMetrics for i in range(numberOfMetrics)]
+    unifiedCriterion["Taste"] = industryMultiplier[0]*mat[0]/sum
+    unifiedCriterion["Roast"] = industryMultiplier[1]*mat[1]/sum
+    unifiedCriterion["Delivery_Time"] = industryMultiplier[2]*mat[2]/sum
+    unifiedCriterion["Reputation"] = industryMultiplier[3]*mat[3]/sum
+    unifiedCriterion["Origin_Popularity"] = industryMultiplier[4]*mat[4]/sum
 
-    for i in range(numberOfMetrics):
-        for j in range(numberOfMetrics):
-            sum = 0
-            for row in range(numberOfMetrics):
-                sum += perfTable[i][row]
-            weightedUserKPI[i][j]=perfTable[i][j]/sum
+    print(unifiedCriterion)
 
-    <!-- Below commented code is for the relative matrix of vendors -->
-
-    <!-- relativeMatrixTaste = [[0]* len(vendorMetrics) for i in range(len(vendorMetrics))]
-
-    for vendor1 in range(len(vendorMetrics)):
-        vendor1Val = int(vendorMetrics[vendor1]['Taste'])
-
-        for vendor2 in range(len(vendorMetrics)):
-            relativeMatrixTaste[vendor1][vendor2]= vendor1Val / int(vendorMetrics[vendor2]['Taste'])
-
-    print(relativeMatrixTaste)
-    
-    weightedOnTaste = [[0]* len(vendorMetrics) for i in range(len(vendorMetrics))]
-
-    for i in range(len(relativeMatrixTaste)):
-        for j in range(len(relativeMatrixTaste)):
-            print("for index " +str(i)+" "+str(j))
-            relativeVendorVal = relativeMatrixTaste[i][j]
-
-            sum=0
-
-            for k in range(len(relativeMatrixTaste)):
-                sum += relativeMatrixTaste[k][j]
-            
-            print(sum)
-
-            temp = relativeVendorVal/sum
-            weightedOnTaste[i][j]=temp
-    -->
-
-    <!-- creating the weight matrix of vendors -->
-
+    print("-------------------------")
     weightedMatrixOfVendors={}
+    vendorScore={}
 
     metricsList=list(vendorMetrics[0].keys())[1:]
+    vendorList = [d.get('Vendor', None) for d in vendorMetrics]
+
+    for k in vendorList:
+        print(k)
 
     for metric in metricsList :
-        print(metric)
         tempDict={}
         for vendor1 in range(len(vendorMetrics)):
             vendor1Val = int(vendorMetrics[vendor1][metric])
@@ -183,49 +206,31 @@ def my_function(*args, **kwargs):
             for vendor2 in range(len(vendorMetrics)):
                 sum += int(vendorMetrics[vendor2][metric])
 
-            tempDict['V'+str(vendor1)]=vendor1Val/sum
+            tempDict[vendorMetrics[vendor1]['Vendor']]=vendor1Val/sum
+
+            vendorIndex = vendorScore.get(vendorMetrics[vendor1]['Vendor'])
+
+            if vendorIndex:
+                vendorScore[vendorMetrics[vendor1]['Vendor']] = vendorScore[vendorMetrics[vendor1]['Vendor']] + (vendor1Val/sum*unifiedCriterion[metric])
+            else:
+                vendorScore[vendorMetrics[vendor1]['Vendor']] = (vendor1Val/sum*unifiedCriterion[metric])
+            
+            
 
         weightedMatrixOfVendors[metric] = tempDict
 
     print(weightedMatrixOfVendors)
-   
-   <!-- AHP Code # Create a function to input pairwise comparisons using a Tkinter dialog -  Complete Revamp TO REMOVE FORM CODE NOT REQUIRED FOR PROJECT 
-    def input_comparison(i, j):
-        root = tk.Tk()
-        root.withdraw()
-        value = simpledialog.askfloat(f"Compare {criteria[i]} and {criteria[j]}", "Enter the comparison value (1 for equal importance, 3 for moderate importance, 5 for strong importance, and so on):")
-        root.destroy()
-        return value
-    REMOVE UPTIL HERE
+    print(vendorScore)
 
+    keys = list(vendorScore.keys())
+    values = list(vendorScore.values())
+    sorted_value_index = np.argsort(values)
+    sorted_dict = {keys[i]: values[i] for i in sorted_value_index}
 
-    # Create a dictionary to store user choices (yes/no) for each column
-    column_choices = {}
-    
-    # Ask the user for column choices (yes or no)
-    for col in criteria:
-        choice = input(f"Do you want to consider the column '{col}' for pairwise comparison? (yes/no)(just type y/n): ")
-        if choice.lower() == "y":
-            column_choices[col] = True
-        else:
-            column_choices[col] = False
-    
-    def create_pairwise_matrix(criteria, choices):
-        n = len(criteria)
-        matrix = np.ones((n, n))
-    
-        for i in range(n):
-            for j in range(i + 1, n):
-                if choices[criteria[i]] and choices[criteria[j]]:
-                    value = input_comparison(i, j)
-                    matrix[i][j] = value
-                    matrix[j][i] = 1.0 / value
-    
-        return matrix-->
-    
-    
-    
-    
+    first2pairs = {k: sorted_dict[k] for k in list(sorted_dict)[-2:]}
+    print(first2pairs)
+
+    Element("AHPSoln").element.value = list(first2pairs.keys())[1]+" and "+list(first2pairs.keys())[0]
 
         </py-script>
     
