@@ -1,0 +1,242 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <link href="https://cdn.jsdeliver.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        </head>
+
+        
+        <body>
+
+
+<!--HTML TEXT: -->
+
+<style>
+    h1{font-size: 25px;}
+    h2{font-size: 20px;}
+    h3{font-size: 15px;}
+    h4{font-size: 10px;}
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    
+    .flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+    
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+</style>
+        
+        <br>
+        <br>
+  <div class="clearfix" style="text-align: center;"><h1>BLACK BRICK</h1></div>
+  <div class="clearfix" style="text-align: center;"><h3> Vendor Selection at One Click!</h3></div>
+  <br>
+  <br>
+
+  <p><div style="text-align: center;"><h2>Enter Preference Rank:</h2></div></p>
+  <div class="flex-container" style="text-align: center;">
+    <div class="flex-child" style="text-align: right;">
+    <br>
+    <div style="margin-bottom: 2px; margin-top: 2px;">Taste</div>
+    <br>
+    <div style="margin-bottom: 2px; margin-top: 2px;">Roast</div>
+    <br>
+    <div style="margin-bottom: 2px; ">Delivery Time</div>
+    <br>
+    <div style="margin-bottom: 2px;">Reputation</div>
+    <br>
+    <div style="margin-bottom: 2px;">Origin Popularity</div>
+    </div>
+    <div class="flex-child">
+        <br>
+    <div style="text-align: left;"><input type="text" id="taste" style="border: 2px solid #000; width: 75px;" ></div>      
+    <br>
+    <div style="text-align: left;"> <input type="text" id="roast" style="border: 2px solid #000; width: 75px;" >     </div>
+    <br>
+    <div style="text-align: left;"><input type="text" id="dt" style="border: 2px solid #000; width: 75px;" ></div>     
+    <br>
+    <div style="text-align: left;"> <input type="text" id="rep" style="border: 2px solid #000; width: 75px;" ></div>      
+    <br>
+    <div style="text-align: left;"><input type="text" id="op" style="border: 2px solid #000; width: 75px;" ></div>
+    </div>
+</div>
+<br>
+<br>
+
+  <div style="text-align: center;"><button id="submit-button" style="border: 2px solid #000;" type="submit" onclick="helper()" pys-onClick="my_function">OK</button></div>
+  
+  <!-- Space creation for AHP output-->
+  <div id="test-output-AHP"></div>
+  <br>
+  
+    <div style="text-align: center;">
+        <div style="text-align: center;"><input type="text" id="AHPSoln" style="border: 2px solid #000; width: 150px;" ></div>
+        <br>
+        <div style="text-align: center;"><button type="button" style="border: 2px solid #000;" onclick="ClearFields()">Clear</button></div>  
+    </div>
+   <!-- Space creation for Clusttering output-->
+   <div id="test-output-Clust"></div>
+
+   <script>
+
+    function helper(){
+    
+        console.log(document.getElementById("taste").value)
+        
+        let taste = isNaN(parseInt(document.getElementById("taste").value, 10)) ? 0 : parseInt(document.getElementById("taste").value, 10);
+        let roast = isNaN(parseInt(document.getElementById("roast").value, 10)) ? 0 : parseInt(document.getElementById("roast").value, 10);
+        let dt = isNaN(parseInt(document.getElementById("dt").value, 10)) ? 0 : parseInt(document.getElementById("dt").value, 10);
+        let rep = isNaN(parseInt(document.getElementById("rep").value, 10)) ? 0 : parseInt(document.getElementById("rep").value, 10);
+        let op = isNaN(parseInt(document.getElementById("op").value, 10)) ? 0 : parseInt(document.getElementById("op").value, 10);
+        
+        let missingVal = 15 - (taste+roast+dt+rep+op);
+        
+        if(missingVal!=0){
+
+            if(taste==0){
+                document.getElementById("taste").value = missingVal;
+            }
+            else if(roast==0){
+                document.getElementById("roast").value = missingVal;
+            }
+            else if(dt==0){
+                document.getElementById("dt").value = missingVal;
+            }
+            else if(rep==0){
+                document.getElementById("rep").value = missingVal;
+            }
+            else if(op==0){
+                document.getElementById("op").value = missingVal;
+            }
+        }
+    }
+
+    function ClearFields() {
+
+    document.getElementById("AHPSoln").value = "";
+    document.getElementById("taste").value = "";
+    document.getElementById("roast").value = "";
+    document.getElementById("dt").value = "";
+    document.getElementById("rep").value = "";
+    document.getElementById("op").value = "";
+    }
+   </script>
+
+        <py-env>
+            - pandas
+            - numpy
+            - paths:
+                - ./tempSheet.csv
+        </py-env>
+    </center>
+
+
+<!--//PYTHON CODE:-->
+
+        <py-script>
+
+import pandas as pd
+import csv
+import numpy as np
+
+
+def my_function(*args, **kwargs):
+
+    vendorMetrics=[*csv.DictReader(open("./tempSheet.csv"))]
+    numberOfMetrics=5
+    
+    taste = (Element('taste').element.value)
+    roast = (Element('roast').element.value)
+    dt = (Element('dt').element.value)
+    rep = (Element('rep').element.value)
+    op = (Element('op').element.value)
+
+    mat = [None]*5
+
+    mat[0] = int(taste)
+    mat[1] = int(roast)
+    mat[2] = int(dt)
+    mat[3] = int(rep)
+    mat[4] = int(op)
+
+    print(mat)
+
+    industryMultiplier = [3.508, 3.417, 2.998, 2.758, 2.849]
+
+    tempUnifiedCriterion = [industryMultiplier[0]*mat[0], industryMultiplier[1]*mat[1], industryMultiplier[2]*mat[2], industryMultiplier[3]*mat[3], industryMultiplier[4]*mat[4]]
+
+    sum = tempUnifiedCriterion[0]+tempUnifiedCriterion[1]+tempUnifiedCriterion[2]+tempUnifiedCriterion[3]+tempUnifiedCriterion[4];
+
+    unifiedCriterion={}
+    
+    unifiedCriterion["Taste"] = industryMultiplier[0]*mat[0]/sum
+    unifiedCriterion["Roast"] = industryMultiplier[1]*mat[1]/sum
+    unifiedCriterion["Delivery_Time"] = industryMultiplier[2]*mat[2]/sum
+    unifiedCriterion["Reputation"] = industryMultiplier[3]*mat[3]/sum
+    unifiedCriterion["Origin_Popularity"] = industryMultiplier[4]*mat[4]/sum
+
+    print(unifiedCriterion)
+
+    print("-------------------------")
+    weightedMatrixOfVendors={}
+    vendorScore={}
+
+    metricsList=list(vendorMetrics[0].keys())[1:]
+    vendorList = [d.get('Vendor', None) for d in vendorMetrics]
+
+    for k in vendorList:
+        print(k)
+
+    for metric in metricsList :
+        tempDict={}
+        for vendor1 in range(len(vendorMetrics)):
+            vendor1Val = int(vendorMetrics[vendor1][metric])
+            sum = 0
+            
+            for vendor2 in range(len(vendorMetrics)):
+                sum += int(vendorMetrics[vendor2][metric])
+
+            tempDict[vendorMetrics[vendor1]['Vendor']]=vendor1Val/sum
+
+            vendorIndex = vendorScore.get(vendorMetrics[vendor1]['Vendor'])
+
+            if vendorIndex:
+                vendorScore[vendorMetrics[vendor1]['Vendor']] = vendorScore[vendorMetrics[vendor1]['Vendor']] + (vendor1Val/sum*unifiedCriterion[metric])
+            else:
+                vendorScore[vendorMetrics[vendor1]['Vendor']] = (vendor1Val/sum*unifiedCriterion[metric])
+            
+            
+
+        weightedMatrixOfVendors[metric] = tempDict
+
+    print(weightedMatrixOfVendors)
+    print(vendorScore)
+
+    keys = list(vendorScore.keys())
+    values = list(vendorScore.values())
+    sorted_value_index = np.argsort(values)
+    sorted_dict = {keys[i]: values[i] for i in sorted_value_index}
+
+    first2pairs = {k: sorted_dict[k] for k in list(sorted_dict)[-2:]}
+    print(first2pairs)
+
+    Element("AHPSoln").element.value = list(first2pairs.keys())[1]+" and "+list(first2pairs.keys())[0]
+
+        </py-script>
+    
+    
+</body>
+
+</html>
+
+<!--Prateek's To do :: To work on AHP code and connect the comparison matrix  -->
