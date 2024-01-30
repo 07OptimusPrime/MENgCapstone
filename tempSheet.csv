@@ -1,8 +1,8 @@
 Vendor,Taste,Roast,Delivery_Time,Reputation,Origin_Popularity
-NorthIsland,1,3,5,4,5
-Henri,1,4,2,7,7
-BestValue,1,7,6,9,3
-True,1,9,9,4,9
-WilsonFood,1,2,2,6,2
-Getway,1,5,6,7,6
-SouthShore,1,4,2,8,7
+Bolivia,1,3,5,4,5
+Tinamit,1,4,2,7,7
+Guatemala,1,7,6,9,3
+Karamo,1,9,9,4,9
+Honeyed,1,2,2,6,2
+CruzLoma,1,5,6,7,6
+Kabiufa,1,4,2,8,7
